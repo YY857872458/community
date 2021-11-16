@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -36,24 +38,28 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request) {
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
         final AccessTokenDto accessTokenDto = new AccessTokenDto();
         accessTokenDto.setClient_id(clientId);
         accessTokenDto.setClient_secret(clientSecret);
         accessTokenDto.setRedirect_uri(redirectUri);
         accessTokenDto.setCode(code);
         accessTokenDto.setState(state);
-        final String token = githubProvider.getAccessToken(accessTokenDto);
-        final GithubUser githubUser = githubProvider.getUser(token);
+        final String accessToken = githubProvider.getAccessToken(accessTokenDto);
+        final GithubUser githubUser = githubProvider.getUser(accessToken);
         if (githubUser != null) {
             final User user = new User();
+            //如果登陆成功，将用户信息保存在数据库中
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setName(githubUser.getName());
-            user.setToken(UUID.randomUUID().toString());
+            final String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setCreateAt(LocalDateTime.now());
             user.setModifiedAt(user.getCreateAt());
             userMapper.insert(user);
-            request.getSession().setAttribute("user", githubUser);
+                //并将token加入session
+            response.addCookie(new Cookie("token",token));
         }
         return "redirect:/";
     }
