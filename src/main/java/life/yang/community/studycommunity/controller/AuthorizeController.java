@@ -53,6 +53,8 @@ public class AuthorizeController {
             //如果登陆成功，将用户信息保存在数据库中
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setName(githubUser.getName());
+            user.setBio(githubUser.getBio());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             final String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setCreateAt(LocalDateTime.now());
