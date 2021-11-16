@@ -1,11 +1,12 @@
-package life.yang.community.studycommunity.model;
+package life.yang.community.studycommunity.dto;
 
+import life.yang.community.studycommunity.model.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class Question {
+public class QuestionDto {
     private Long id;
     private String title;
     private String description;
@@ -16,4 +17,5 @@ public class Question {
     private Long viewCount;
     private Long likeCount;
     private String tag;
+    private User user;
 }
