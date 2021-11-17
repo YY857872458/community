@@ -1,5 +1,6 @@
 package life.yang.community.studycommunity.service;
 
+import life.yang.community.studycommunity.dto.PaginationDto;
 import life.yang.community.studycommunity.dto.QuestionDto;
 import life.yang.community.studycommunity.mapper.QuestionMapper;
 import life.yang.community.studycommunity.mapper.UserMapper;
@@ -19,16 +20,28 @@ public class QuestionService {
     private final QuestionMapper questionMapper;
     private final UserMapper userMapper;
 
-    public List<QuestionDto> getAllQuestions() {
-        final List<Question> questionList = questionMapper.getAllQuestions();
+    public PaginationDto getQuestionList(Integer page, Integer size) {
+        final PaginationDto paginationDto = new PaginationDto();
+        Integer totalCount = questionMapper.count();
+        paginationDto.setPagination(page, size, totalCount);
+        if(page < 1){
+            page = 1;
+        }
+        if(page > paginationDto.getMaxPage()){
+            page = paginationDto.getMaxPage();
+        }
+        Integer offset = (page - 1) * size;
+        final List<Question> questions = questionMapper.list(offset, size);
         List<QuestionDto> questionDtoList = new ArrayList<>();
-        for (Question question : questionList) {
+
+        for (Question question : questions) {
+            User user = userMapper.findById(question.getCreator());
             final QuestionDto questionDto = new QuestionDto();
             BeanUtils.copyProperties(question, questionDto);
-            User user = userMapper.findById(question.getCreator());
             questionDto.setUser(user);
             questionDtoList.add(questionDto);
         }
-        return questionDtoList;
+        paginationDto.setQuestions(questionDtoList);
+        return paginationDto;
     }
 }
