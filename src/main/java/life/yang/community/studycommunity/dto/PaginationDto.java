@@ -24,6 +24,12 @@ public class PaginationDto {
             this.maxPage = totalCount / size + 1;
         }
 
+        if(page < 1){
+            page = 1;
+        }
+        if(page > maxPage){
+            page = maxPage;
+        }
         pages.add(page);
         for (int i = 1; i <= 3; i++) {
             if (page - i > 0) {
