@@ -5,6 +5,8 @@ import life.yang.community.studycommunity.dto.GithubUser;
 import life.yang.community.studycommunity.mapper.UserMapper;
 import life.yang.community.studycommunity.model.User;
 import life.yang.community.studycommunity.provider.GithubProvider;
+import life.yang.community.studycommunity.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthorizeController {
 
     private final GithubProvider githubProvider;
@@ -29,11 +32,7 @@ public class AuthorizeController {
     private String redirectUri;
 
     private final UserMapper userMapper;
-
-    public AuthorizeController(GithubProvider githubProvider,UserMapper userMapper){
-        this.githubProvider = githubProvider;
-        this.userMapper = userMapper;
-    }
+    private final UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -57,9 +56,7 @@ public class AuthorizeController {
             user.setAvatarUrl(githubUser.getAvatarUrl());
             final String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setCreateAt(LocalDateTime.now());
-            user.setModifiedAt(user.getCreateAt());
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
                 //并将token加入session
             response.addCookie(new Cookie("token",token));
         }
