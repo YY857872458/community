@@ -16,33 +16,24 @@ public class PaginationDto {
     private List<Integer> pages = new ArrayList<>();
     private Integer maxPage;
 
-    public void setPagination(Integer page, Integer size, Integer totalCount) {
+    public void setPagination(Integer page, Integer maxPage) {
         this.currentPage = page;
-        if (totalCount % size == 0) {
-            this.maxPage = totalCount / size;
-        } else {
-            this.maxPage = totalCount / size + 1;
-        }
+        this.maxPage = maxPage;
 
-        if(page < 1){
-            page = 1;
-        }
-        if(page > maxPage){
-            page = maxPage;
-        }
         pages.add(page);
         for (int i = 1; i <= 3; i++) {
             if (page - i > 0) {
                 pages.add(0,page - i);
             }
-            if (page + i <= maxPage) {
+            if (page + i <= this.maxPage) {
                 pages.add(page + i);
             }
         }
 
         hasLeftBracket = page != 1;
-        hasRightBracket = !page.equals(maxPage);
+        hasRightBracket = !page.equals(this.maxPage);
         hasDoubleLeftBracket = !pages.contains(1);
-        hasDoubleRightBracket = !pages.contains(maxPage);
+        hasDoubleRightBracket = !pages.contains(this.maxPage);
     }
+
 }
