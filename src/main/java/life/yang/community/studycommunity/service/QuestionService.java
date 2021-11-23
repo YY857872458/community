@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,12 +85,32 @@ public class QuestionService {
         return paginationDto;
     }
 
-    public QuestionDto findQuestionById(String id) {
+    public QuestionDto findQuestionById(Long id) {
         Question question = questionMapper.findById(id);
         final QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question, questionDto);
         final User user = userMapper.findById(question.getCreator());
         questionDto.setUser(user);
         return questionDto;
+    }
+
+    public void createOrUpdate(Question question) {
+        final Long id = question.getId();
+        if (id == null) {
+            question.setCreateAt(LocalDateTime.now());
+            question.setModifiedAt(question.getCreateAt());
+            question.setCommentCount(0L);
+            question.setLikeCount(0L);
+            question.setViewCount(0L);
+            questionMapper.create(question);
+        } else {
+            final Question dbQuestion = questionMapper.findById(id);
+            dbQuestion.setModifiedAt(LocalDateTime.now());
+            dbQuestion.setTitle(question.getTitle());
+            dbQuestion.setDescription(question.getDescription());
+            dbQuestion.setTag(question.getTag());
+            questionMapper.update(dbQuestion
+            );
+        }
     }
 }

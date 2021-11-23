@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private final UserMapper userMapper;
     private final QuestionService questionService;
 
     @GetMapping("/profile/{action}")
@@ -32,7 +31,7 @@ public class ProfileController {
             return "redirect:/";
         }
 
-        if ("questions".equals(action)) {
+        if ("question".equals(action)) {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
             PaginationDto pagination = questionService.list(user.getId(), page, size);
