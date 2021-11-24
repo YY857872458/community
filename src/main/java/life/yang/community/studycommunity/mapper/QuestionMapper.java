@@ -1,5 +1,6 @@
 package life.yang.community.studycommunity.mapper;
 
+import com.github.pagehelper.Page;
 import life.yang.community.studycommunity.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,4 +29,8 @@ public interface QuestionMapper {
     Question findById(@Param("id") Long id);
 
     void update(Question question);
+
+    Page<Question> findAll();
+
+    List<Question> findByUserId(@Param("userId") Long userId);
 }

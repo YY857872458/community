@@ -2,7 +2,6 @@ package life.yang.community.studycommunity.controller;
 
 import life.yang.community.studycommunity.dto.AccessTokenDto;
 import life.yang.community.studycommunity.dto.GithubUser;
-import life.yang.community.studycommunity.mapper.UserMapper;
 import life.yang.community.studycommunity.model.User;
 import life.yang.community.studycommunity.provider.GithubProvider;
 import life.yang.community.studycommunity.service.UserService;
@@ -30,13 +29,11 @@ public class AuthorizeController {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
-    private final UserMapper userMapper;
     private final UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request,
                            HttpServletResponse response) {
         final AccessTokenDto accessTokenDto = new AccessTokenDto();
         accessTokenDto.setClient_id(clientId);

@@ -38,4 +38,13 @@
         from question
         where id = #{id}
     </select>
+    <select id="findAll" resultType="life.yang.community.studycommunity.model.Question">
+        select *
+        from question
+    </select>
+    <select id="findByUserId" resultType="life.yang.community.studycommunity.model.Question">
+        select *
+        from question
+        where creator = #{userId}
+    </select>
 </mapper>
