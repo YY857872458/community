@@ -28,7 +28,7 @@ public interface QuestionMapper {
 
     Question findById(@Param("id") Long id);
 
-    void update(Question question);
+    int update(Question question);
 
     Page<Question> findAll();
 

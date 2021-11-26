@@ -3,6 +3,8 @@ package life.yang.community.studycommunity.service;
 import com.github.pagehelper.PageHelper;
 import life.yang.community.studycommunity.dto.PaginationDto;
 import life.yang.community.studycommunity.dto.QuestionDto;
+import life.yang.community.studycommunity.exception.CustomizeErrorCode;
+import life.yang.community.studycommunity.exception.CustomizeException;
 import life.yang.community.studycommunity.mapper.QuestionMapper;
 import life.yang.community.studycommunity.mapper.UserMapper;
 import life.yang.community.studycommunity.model.Question;
@@ -69,6 +71,9 @@ public class QuestionService {
 
     public QuestionDto findQuestionById(Long id) {
         Question question = questionMapper.findById(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         final QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question, questionDto);
         final User user = userMapper.findById(question.getCreator());
@@ -91,8 +96,10 @@ public class QuestionService {
             dbQuestion.setTitle(question.getTitle());
             dbQuestion.setDescription(question.getDescription());
             dbQuestion.setTag(question.getTag());
-            questionMapper.update(dbQuestion
-            );
+            final int isUpdate = questionMapper.update(dbQuestion);
+            if (isUpdate != 1) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }
