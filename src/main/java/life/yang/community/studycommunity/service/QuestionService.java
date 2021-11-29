@@ -102,4 +102,8 @@ public class QuestionService {
             }
         }
     }
+
+    public void incView(Long id){
+        questionMapper.incView(id);
+    }
 }

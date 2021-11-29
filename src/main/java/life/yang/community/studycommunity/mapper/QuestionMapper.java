@@ -33,4 +33,6 @@ public interface QuestionMapper {
     Page<Question> findAll();
 
     List<Question> findByUserId(@Param("userId") Long userId);
+
+    void incView(@Param("id") Long id);
 }

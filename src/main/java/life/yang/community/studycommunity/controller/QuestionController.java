@@ -18,6 +18,7 @@ public class QuestionController {
     public String question(@PathVariable(name = "id") Long id,
                            Model model){
         QuestionDto questionDto = questionService.findQuestionById(id);
+        questionService.incView(questionDto.getId());
         model.addAttribute("question",questionDto);
         return "question";
     }
