@@ -32,4 +32,6 @@ public interface QuestionMapper {
     List<Question> findByUserId(@Param("userId") Long userId);
 
     void incView(@Param("id") Long id);
+
+    void incCommentCount(@Param("id") Long id);
 }
