@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/e/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="life.yang.community.studycommunity.mapper.CommentMapper">
+    <insert id="insert">
+        insert into comment
+        (id, parent_id, `type`, author_id, content, create_at, modified_at, like_count)
+        values (#{id}, #{parentId}, #{type}, #{authorId}, #{content}, #{createAt}, #{modifiedAt},
+                #{likeCount})
+    </insert>
+    <select id="findById" resultType="life.yang.community.studycommunity.model.Comment">
+        select * from comment where id = #{id}
+    </select>
+</mapper>

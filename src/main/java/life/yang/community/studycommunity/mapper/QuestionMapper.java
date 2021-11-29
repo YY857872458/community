@@ -2,11 +2,8 @@ package life.yang.community.studycommunity.mapper;
 
 import com.github.pagehelper.Page;
 import life.yang.community.studycommunity.model.Question;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
