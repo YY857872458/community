@@ -9,6 +9,7 @@ import life.yang.community.studycommunity.model.Question;
 import life.yang.community.studycommunity.typeEnum.CommentTypeEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class CommentService {
     private final CommentMapper commentMapper;
     private final QuestionMapper questionMapper;
 
+    @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId() == 0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
