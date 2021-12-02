@@ -10,4 +10,7 @@
     <select id="findById" resultType="life.yang.community.studycommunity.model.Comment">
         select * from comment where id = #{id}
     </select>
+    <select id="findByQuestionId" resultType="life.yang.community.studycommunity.model.Comment">
+        select * from comment where parent_id = #{questionId};
+    </select>
 </mapper>

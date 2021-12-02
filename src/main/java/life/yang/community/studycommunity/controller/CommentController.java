@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CommentController {
 
-    private final CommentMapper commentMapper;
     private final CommentService commentService;
 
     @PostMapping("/comment")
