@@ -36,6 +36,10 @@ body {
     font-size: 14px;
 }
 
+.btn-edit {
+    margin-bottom: 10px;
+}
+
 .jumbotron {
     margin: 50px;
 }
